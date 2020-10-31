@@ -6,17 +6,15 @@ REPO_NAME=__REPO_NAME__
 COMPOSE_FILE=__COMPOSE_FILE__
 
 # Install Docker Engine if not available
+echo "Checking for Docker"
 if ! [ -x "$(command -v docker)" ]; then
     echo 'Info: Docker was not detected and is now being installed...' >&2
-    yum install -y yum-utils device-mapper-persistent-data lvm2
-    yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-    yum install -y docker-ce docker-ce-cli containerd.io
-
-    systemctl enable docker
-    systemctl start docker
+    curl -fsSL https://get.docker.com -o get-docker.sh
+    sudo sh get-docker.sh
 fi
 
 # Install docker-compose if not available
+echo "Checking for Docker-Compose"
 if ! [ -x "$(command -v docker-compose)" ]; then
     echo 'Info: docker-compose was not detected and is now being installed...' >&2
     sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
